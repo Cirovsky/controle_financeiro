@@ -1,6 +1,6 @@
 import pandas as pd
-from datetime import date
 import bisect
+from datetime import date
 
 def localiza_data_proxima(df:pd.DataFrame, data:date):
     lista_datas:list[date] = df.index.to_list()
