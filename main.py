@@ -3,11 +3,14 @@ import pandas as pd
 import numpy as np
 from misc_func import localiza_data_proxima
 
+#retirar a função abaixo após finalizar o dashboard
 def revela_valor(valor):
+    """auxiliar quando tiver dúvidas sobre qual o retorno de alguma função anônima"""
     print(f"aqui:{valor[-1]}\nfim")
     return 1
 
 def calc_stats(df:pd.DataFrame):
+    """auxilia nos cálculas das estatísticas básicas, criando colunas para cada estatística"""
     df = df.groupby(by="Data")[["Valor"]].sum()
     df["Data"] = df.index.to_list()
     df["Diferenca_Mensal"] = df["Valor"] - df["Valor"].shift(1)
@@ -26,6 +29,17 @@ def calc_stats(df:pd.DataFrame):
     df["Diferenca_Acumulada"] = df["Valor"].map(lambda x: x - primeiro_valor_valido)
     df["Diferenca_Acumulada_Rel"] = df["Valor"].map(lambda x: x / primeiro_valor_valido -1)
     return df
+
+class botao_date:
+    key = 0
+    def __init__(self,df:pd.DataFrame):
+        """para o uso desta classe, o dataframe deve ter index configurado com date/datetime"""
+        self.min_value = df.index.min()
+        self.max_value = df.index.max()
+        botao_date.key+= 1
+    def criar_botao(self):
+        return st.date_input(label="Selecione data", min_value= self.min_value, max_value= self.max_value, key=botao_date.key)
+
 st.set_page_config(page_title="Finanças",page_icon=":moneybag:")
 st.markdown("""
     # Boas Vindas!
@@ -59,9 +73,8 @@ if file_upload:
     with tab_history:
         st.line_chart(df_instituicao)
     with tab_share:
-        date = st.date_input(label="Selecione data"
-                      , min_value=df_instituicao.index.min()
-                      ,max_value=df_instituicao.index.max())
+        date = botao_date(df_instituicao).criar_botao()
+        #date = st.date_input(label="Selecione data", min_value=df_instituicao.index.min(),max_value=df_instituicao.index.max())
         if date not in df_instituicao.index:
             date = localiza_data_proxima(df_instituicao,date)
             st.html(f"<div style='height: 20px; color: orange'>exibindo resultado de: {date}</div>")
@@ -74,16 +87,22 @@ if file_upload:
     exp3 = st.expander("Estatisticas Gerais")
     df_stats = calc_stats(df)
     columns_config ={ col:st.column_config.NumberColumn(col, format="R$ %.2f") if not col.__contains__("Rel") else st.column_config.NumberColumn(col, format="percent") for col in df_stats.columns.to_list()}
-    tab_data_eg, tab_hist_patrimonio, tab_hist_diff, tab_hist_acc = exp3.tabs(["Dados", "Patrimônio", "Diferença", "Acumulado"])
-    with tab_data_eg:
+    tab_stats, tab_hist_patrimonio, tab_hist_diff, tab_hist_acc = exp3.tabs(["Dados", "Patrimônio", "Diferença", "Acumulado"])
+    with tab_stats:
         st.dataframe(df_stats,column_config=columns_config)
     with tab_hist_patrimonio:
         st.line_chart(df_stats["Valor"])
     with tab_hist_diff:
         st.line_chart(df_stats[["Diferenca_Mensal","Avg_6M_Diferenca","Avg_12M_Diferenca", "Diferenca_Anual"]])
-    cols_abs = [col for col in df_stats.columns.to_list() if not col.__contains__("Rel")]
     with tab_hist_acc:
         st.line_chart(df_stats["Diferenca_Acumulada"])
-    cols_abs = [col for col in df_stats.columns.to_list() if not col.__contains__("Rel")]
+    exp4 = st.expander("Metas")
+    tab_rendimentos, tab_data_meta, tab_meta_rel, tab_meta_abs = exp4.tabs(["Data","rendimentos","meta_rel","meta_abs"])
+    with tab_rendimentos:
+        date2 = botao_date(df_instituicao).criar_botao()
+        sal_bruto:float= (st.number_input(label="digite seu salário (em reais):",min_value=0))
+        sal_liq:float= (st.number_input(label="digite seu salário (em reais):",min_value=0))
+        tax_seliq:float = (st.number_input(label="digite a taxa selic(em decimal):",min_value=0, max_value=1))
+        st.dataframe
 
-#não tem arquivos
+#não tem arquivos'
