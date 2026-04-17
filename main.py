@@ -41,13 +41,6 @@ class botao_date:
         return st.date_input(label="Selecione data", min_value= self.min_value, max_value= self.max_value, key=botao_date.key)
 
 st.set_page_config(page_title="Finanças",page_icon=":moneybag:")
-st.markdown("""
-    # Boas Vindas!
-    ## Nosso app financeiro!
-""")
-st.html("""
-    <div>testando HTML</div>
-""")
 
 #Widget de upload de dados
 file_upload = st.file_uploader("Faça upload dos dados", type=['csv'])
