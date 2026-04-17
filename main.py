@@ -44,6 +44,7 @@ st.set_page_config(page_title="Finanças",page_icon=":moneybag:")
 
 #Widget de upload de dados
 #file_upload = st.file_uploader("Faça upload dos dados", type=['csv'])
+
 file_upload = "datasets/Template Controle Financeiro - Saldo Mensal.csv"
 
 #verifica se foi feito upload
