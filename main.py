@@ -93,8 +93,8 @@ if file_upload:
     tab_rendimentos, tab_data_meta, tab_meta_rel, tab_meta_abs = exp4.tabs(["Data","rendimentos","meta_rel","meta_abs"])
     with tab_rendimentos:
         date2 = botao_date(df_instituicao).criar_botao()
-        sal_bruto:float= (st.number_input(label="digite seu salário (em reais):",min_value=0))
-        sal_liq:float= (st.number_input(label="digite seu salário (em reais):",min_value=0))
-        tax_seliq:float = (st.number_input(label="digite a taxa selic(em decimal):",min_value=0, max_value=1))
+        sal_bruto:float= (st.number_input(label="digite seu salário (em reais):",min_value=0, key='sal_bruto'))
+        sal_liq:float= (st.number_input(label="digite seu salário (em reais):",min_value=0, key = "sal_liquido"))
+        tax_seliq:float = (st.number_input(label="digite a taxa selic(em decimal):",min_value=0, max_value=1, key= "tax_seliq"))
 
 #não tem arquivos'
