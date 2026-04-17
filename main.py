@@ -103,6 +103,5 @@ if file_upload:
         sal_bruto:float= (st.number_input(label="digite seu salário (em reais):",min_value=0))
         sal_liq:float= (st.number_input(label="digite seu salário (em reais):",min_value=0))
         tax_seliq:float = (st.number_input(label="digite a taxa selic(em decimal):",min_value=0, max_value=1))
-        st.dataframe
 
 #não tem arquivos'
